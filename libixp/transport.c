@@ -1,4 +1,4 @@
-/* Copyright ©2007-2008 Kris Maglione <fbsdaemon@gmail.com>
+﻿/* Copyright ©2007-2008 Kris Maglione <fbsdaemon@gmail.com>
  * See LICENSE file for license details.
  */
 #include <errno.h>
@@ -26,7 +26,7 @@ mread(int fd, IxpMsg *msg, uint count) {
 	if(n > count)
 		n = count;
 
-	r = thread->read(fd, msg->pos, n, 0);
+	r = thread->read(fd, msg->pos, n);
 	if(r > 0)
 		msg->pos += r;
 	return r;
@@ -57,7 +57,7 @@ ixp_sendmsg(int fd, IxpMsg *msg) {
 
 	msg->pos = msg->data;
 	while(msg->pos < msg->end) {
-		r = thread->write(fd, msg->pos, msg->end - msg->pos, 0);
+		r = thread->write(fd, msg->pos, msg->end - msg->pos);
 		if(r < 1) {
 			if(errno == EINTR)
 				continue;

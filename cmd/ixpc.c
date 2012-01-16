@@ -1,8 +1,12 @@
-/* Copyright ©2007 Kris Maglione <fbsdaemon@gmail.com>
+﻿/* Copyright ©2007 Kris Maglione <fbsdaemon@gmail.com>
  * See LICENSE file for license details.
  */
 #define IXP_NO_P9_
 #define IXP_P9_STRUCTS
+#ifdef __WIN32
+	#include <io.h>
+	#include <fcntl.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -347,6 +351,12 @@ main(int argc, char *argv[]) {
 
 	if(!address)
 		fatal("$IXP_ADDRESS not set\n");
+
+#ifdef __WIN32
+	if (_setmode(0, _O_BINARY) == -1) {
+		fprintf(stderr, "warning: unable to set stdin mode to binary\n");
+	}
+#endif
 
 	client = ixp_mount(address);
 	if(client == nil)

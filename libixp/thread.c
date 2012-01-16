@@ -90,8 +90,8 @@ static IxpThread ixp_nothread = {
 	.rdestroy = rvoid,
 	/* Other */
 	.errbuf = errbuf,
-	.read = recv,
-	.write = send,
+	.read = read,
+	.write = write,
 	.select = select,
 };
 

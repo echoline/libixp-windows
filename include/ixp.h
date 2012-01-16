@@ -1,4 +1,4 @@
-/* Copyright ©2004-2006 Anselm R. Garbe <garbeam at gmail dot com>
+﻿/* Copyright ©2004-2006 Anselm R. Garbe <garbeam at gmail dot com>
  * Copyright ©2006-2007 Kris Maglione <fbsdaemon@gmail.com>
  * See LICENSE file for license details.
  */
@@ -603,8 +603,8 @@ struct IxpThread {
 	void	(*rdestroy)(IxpRendez*);
 	/* Other */
 	char	*(*errbuf)(void);
-	ssize_t	(*read)(int, void*, size_t, int);
-	ssize_t	(*write)(int, const void*, size_t, int);
+	ssize_t	(*read)(int, void*, size_t);
+	ssize_t	(*write)(int, const void*, size_t);
 	int	(*select)(int, fd_set*, fd_set*, fd_set*, struct timeval*);
 };
 

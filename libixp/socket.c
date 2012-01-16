@@ -1,5 +1,5 @@
-/* Copyright Â©2007-2008 Kris Maglione <fbsdaemon@gmail.com>
- * Copyright Â©2004-2006 Anselm R. Garbe <garbeam at gmail dot com>
+/* Copyright ©2007-2008 Kris Maglione <fbsdaemon@gmail.com>
+ * Copyright ©2004-2006 Anselm R. Garbe <garbeam at gmail dot com>
  * See LICENSE file for license details.
  */
 #include <errno.h>
@@ -7,6 +7,7 @@
 	#define _WIN32_WINNT 0x0501	
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
+	#include <io.h>
 #else
 	#include <netdb.h>
 	#include <sys/socket.h>
@@ -20,6 +21,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <rs232/rs232.h>
 #include "ixp_local.h"
 
 /* Note: These functions modify the strings that they are passed.
@@ -157,6 +159,7 @@ dial_tcp(char *host) {
 	int fd;
 	addrinfo *ai, *aip;
 #ifdef __WIN32
+	SOCKET tmp;
 	WSADATA WSAData;
 
 	if (WSAStartup (MAKEWORD(2,2), &WSAData) != 0) {
@@ -171,13 +174,25 @@ dial_tcp(char *host) {
 
 	SET(fd);
 	for(ai = aip; ai; ai = ai->ai_next) {
+#ifdef __WIN32
+		tmp = WSASocket(ai->ai_family, ai->ai_socktype, ai->ai_protocol, NULL, 0, 0);
+		if (tmp != INVALID_SOCKET)
+			fd = _open_osfhandle((long)tmp, O_RDWR | O_BINARY);
+		else
+			fd = -1;
+#else
 		fd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+#endif
 		if(fd == -1) {
 			werrstr("socket: %s", strerror(errno));
 			continue;
 		}
 
+#ifdef __WIN32
+		if(connect(tmp, ai->ai_addr, ai->ai_addrlen) == 0)
+#else
 		if(connect(fd, ai->ai_addr, ai->ai_addrlen) == 0)
+#endif
 			break;
 
 		werrstr("connect: %s", strerror(errno));
@@ -228,6 +243,23 @@ announce_tcp(char *host) {
 	return fd;
 }
 
+static int
+dial_rs232(char *addr) {
+	char *p = strchr(addr, '!');
+	int port, baud, fd;
+
+	if (p == nil)
+		return -1;
+	*(p++) = '\0';
+	
+	port = atoi(addr);
+	baud = atoi(p);
+	
+	fd = OpenComport(port, baud);
+
+	return fd;
+}
+
 typedef struct addrtab addrtab;
 static
 struct addrtab {
@@ -235,12 +267,14 @@ struct addrtab {
 	int (*fn)(char*);
 } dtab[] = {
 	{"tcp", dial_tcp},
+	{"com", dial_rs232},
 #ifndef __WIN32
 	{"unix", dial_unix},
 #endif
 	{0, 0}
 }, atab[] = {
 	{"tcp", announce_tcp},
+	{"com", dial_rs232},
 #ifndef __WIN32
 	{"unix", announce_unix},
 #endif

@@ -1,4 +1,4 @@
-PROGS = ${TARG:=.exe}
+PROGS = ${TARG}
 
 all: $(OFILES) $(PROGS)
 

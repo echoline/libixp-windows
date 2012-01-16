@@ -2,8 +2,8 @@ ROOT=..
 include ${ROOT}/mk/hdr.mk
 include ${ROOT}/mk/ixp.mk
 
-LDLIBS = -L${ROOT}/lib -lixp
-TARG =	ixpc
+LDLIBS = -L${ROOT}/lib -lixp -lws2_32
+TARG =	ixpc.exe
 LIB = ${ROOT}/lib/libixp.a
 
 include ${ROOT}/mk/many.mk

@@ -13,7 +13,7 @@ PREFIX = /usr/local
 
 # Includes and libs
 INCPATH = .:$(ROOT)/include:$(INCLUDE):/usr/include
-LIBS = -L/usr/lib -lwsock32 -lws2_32
+LIBS = -L/usr/lib
 
 # Flags
 include $(ROOT)/mk/gcc.mk

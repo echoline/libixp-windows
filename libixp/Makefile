@@ -11,6 +11,7 @@ OBJ =	client    \
 	message   \
 	request   \
 	rpc       \
+	rs232/rs232 \
 	server    \
 	srv_util  \
 	socket    \
