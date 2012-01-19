@@ -29,6 +29,7 @@ mread(int fd, IxpMsg *msg, uint count) {
 	r = thread->read(fd, msg->pos, n);
 	if(r > 0)
 		msg->pos += r;
+
 	return r;
 }
 
@@ -54,6 +55,10 @@ readn(int fd, IxpMsg *msg, uint count) {
 uint
 ixp_sendmsg(int fd, IxpMsg *msg) {
 	int r;
+
+	write(2, "<<< ", 4);
+	write(2, msg->data, msg->end - msg->data);
+	write(2, "\n", 1);
 
 	msg->pos = msg->data;
 	while(msg->pos < msg->end) {
@@ -94,6 +99,10 @@ ixp_recvmsg(int fd, IxpMsg *msg) {
 	}
 
 	msg->end = msg->pos;
+	write(2, ">>> ", 4);
+	write(2, msg->data, msg->end - msg->data);
+	write(2, "\n", 1);
+
 	return msize;
 }
 

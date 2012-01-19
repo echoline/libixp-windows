@@ -12,7 +12,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <ixp_local.h>
+#include "ixp_local.h"
 
 /* Temporary */
 #define fatal(...) ixp_eprint("ixpc: fatal: " __VA_ARGS__); \
@@ -338,7 +338,7 @@ main(int argc, char *argv[]) {
 
 	ARGBEGIN{
 	case 'v':
-		printf("%s-" VERSION ", ©2007 Kris Maglione\n", argv0);
+		printf("%s: (C)2007 Kris Maglione\n", argv0);
 		exit(0);
 	case 'a':
 		address = EARGF(usage());

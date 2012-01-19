@@ -1,4 +1,4 @@
-/* Copyright ©2007 Ron Minnich <rminnich at gmail dot com>
+﻿/* Copyright ©2007 Ron Minnich <rminnich at gmail dot com>
 /* Copyright ©2007 Kris Maglione <maglione.k@gmail.com>
  * See LICENSE file for license details.
  */
