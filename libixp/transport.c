@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include "ixp_local.h"
 
+#define DEBUG 0
+
 static int
 mread(int fd, IxpMsg *msg, uint count) {
 	int r, n;
