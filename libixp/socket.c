@@ -244,18 +244,16 @@ announce_tcp(char *host) {
 }
 
 static int
-dial_rs232(char *addr) {
-	char *p = strchr(addr, '!');
-	int port, baud, fd;
+dial_rs232(char *arg) {
+	char *p = strchr(arg, '!');
+	int fd, baud = 57600;
 
-	if (p == nil)
-		return -1;
-	*(p++) = '\0';
+	if (p) {
+		*(p++) = '\0';
+		baud = atoi (p);
+	}
 	
-	port = atoi(addr);
-	baud = atoi(p);
-	
-	fd = OpenComport(port, baud);
+	fd = OpenComport (atoi (arg), baud);
 
 	return fd;
 }

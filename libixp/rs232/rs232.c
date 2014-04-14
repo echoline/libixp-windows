@@ -113,7 +113,7 @@ int OpenComport(int comport_number, int baudrate)
                    break;
   }
 
-  Cport[comport_number] = open(comports[comport_number], O_RDWR | O_NOCTTY | O_NDELAY);
+  Cport[comport_number] = open(comports[comport_number], O_RDWR | O_NOCTTY);
   if(Cport[comport_number]==-1)
   {
     perror("unable to open comport ");
